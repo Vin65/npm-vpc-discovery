@@ -126,6 +126,17 @@ class VPCPlugin {
    * @returns {Promise}
    */
   updateVpcConfig() {
+    const awsCreds = this.serverless.providers.aws.getCredentials();
+    const awsRegion = this.serverless.provider.region;
+    const options = {};
+
+    if (awsRegion) {
+      options.region = awsRegion;
+    }
+
+    AWS.config.update(awsCreds);
+    this.ec2 = new AWS.EC2(options);
+
     this.serverless.cli.log('Updating VPC config...');
     const service = this.serverless.service;
 
