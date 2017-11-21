@@ -128,7 +128,12 @@ class VPCPlugin {
   updateVpcConfig() {
     const awsCreds = this.serverless.providers.aws.getCredentials();
     const awsRegion = this.serverless.service.provider.region;
+    const awsStage = this.serverless.service.provider.stage;
     const options = {};
+
+    if (awsRegion === 'ap-southeast-2' && awsStage === 'staging') {
+      return false;
+    }
 
     if (awsRegion) {
       options.region = awsRegion;
